@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mount Zion Senior Secondary School — Student Portal</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap');
+
+:root{
+  --forest:#1B4332;
+  --forest-deep:#0F2E22;
+  --gold:#C99A2E;
+  --gold-soft:#E3C170;
+  --maroon:#7A2E2E;
+  --cream:#F7F3E9;
+  --sand:#ECE2C9;
+  --charcoal:#262321;
+  --ink-soft:#5B5650;
+  --line:#DCD3B9;
+  --white:#FFFFFF;
+  --radius:10px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Work Sans',sans-serif;
+  background:var(--cream);
+  color:var(--charcoal);
+  min-height:100vh;
+}
+h1,h2,h3,.display{font-family:'Fraunces',serif;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+button{font-family:inherit;cursor:pointer;}
+a{color:inherit;}
+::selection{background:var(--gold-soft);}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important;transition-duration:0.001ms !important;}
+}
+
+/* ---------- LOGIN SCREEN ---------- */
+#login-screen{
+  min-height:100vh;
+  display:flex;
+}
+.login-illustration{
+  flex:1.1;
+  background:linear-gradient(180deg,#0F2E22 0%, var(--forest) 55%, #16382A 100%);
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:48px 56px;
+  color:var(--cream);
+}
+.login-illustration svg.hills{
+  position:absolute;
+  bottom:0;left:0;width:100%;height:55%;
+  z-index:0;
+}
+.brand-mark{
+  display:flex;align-items:center;gap:14px;position:relative;z-index:2;
+}
+.brand-mark svg{flex-shrink:0;}
+.brand-mark .school-name{
+  font-size:1.05rem;
+  letter-spacing:0.04em;
+  line-height:1.25;
+  font-weight:600;
+}
+.brand-mark .school-loc{
+  font-family:'Work Sans',sans-serif;
+  font-size:0.75rem;
+  color:var(--gold-soft);
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  margin-top:2px;
+}
+.illustration-copy{position:relative;z-index:2;max-width:380px;}
+.illustration-copy .motto{
+  font-size:2.1rem;
+  line-height:1.15;
+  font-weight:600;
+  margin:0 0 14px 0;
+}
+.illustration-copy p{
+  font-size:0.95rem;
+  color:#D8E8DD;
+  line-height:1.6;
+  margin:0;
+}
+.illustration-footer{
+  position:relative;z-index:2;
+  font-size:0.78rem;
+  color:#9FB8A9;
+  display:flex;gap:24px;flex-wrap:wrap;
+}
+
+.login-panel{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px;
+}
+.login-card{
+  width:100%;
+  max-width:380px;
+}
+.login-card h2{
+  font-size:1.6rem;
+  margin:0 0 6px 0;
+  color:var(--forest-deep);
+}
+.login-card .sub{
+  font-size:0.88rem;
+  color:var(--ink-soft);
+  margin:0 0 28px 0;
+}
+.field{margin-bottom:18px;}
+.field label{
+  display:block;
+  font-size:0.78rem;
+  font-weight:600;
+  letter-spacing:0.03em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  margin-bottom:6px;
+}
+.field input{
+  width:100%;
+  padding:11px 13px;
+  border:1.5px solid var(--line);
+  border-radius:8px;
+  font-size:0.95rem;
+  background:var(--white);
+  color:var(--charcoal);
+  transition:border-color .15s;
+}
+.field input:focus{border-color:var(--forest);}
+.login-row{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:22px;font-size:0.82rem;
+}
+.forgot-link{color:var(--forest);text-decoration:none;font-weight:600;border:none;background:none;font-size:0.82rem;padding:0;}
+.forgot-link:hover{text-decoration:underline;}
+.btn-primary{
+  width:100%;
+  background:var(--forest);
+  color:var(--cream);
+  border:none;
+  padding:13px;
+  border-radius:8px;
+  font-size:0.95rem;
+  font-weight:600;
+  letter-spacing:0.02em;
+  transition:background .15s;
+}
+.btn-primary:hover{background:var(--forest-deep);}
+.demo-hint{
+  margin-top:18px;
+  background:var(--sand);
+  border:1px dashed var(--line);
+  border-radius:8px;
+  padding:10px 12px;
+  font-size:0.76rem;
+  color:var(--ink-soft);
+  line-height:1.5;
+}
+.demo-hint b{color:var(--charcoal);}
+
+/* ---------- PORTAL SCREEN ---------- */
+#portal-screen{display:none;min-height:100vh;}
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:64px;
+  background:var(--white);
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 22px 0 14px;
+  z-index:30;
+}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+#hamburger{
+  display:none;background:none;border:none;padding:8px;border-radius:6px;
+}
+#hamburger svg{display:block;}
+.topbar-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--forest-deep);}
+.topbar-right{display:flex;align-items:center;gap:18px;}
+.bell-wrap{position:relative;}
+.bell-dot{
+  position:absolute;top:2px;right:2px;width:7px;height:7px;border-radius:50%;
+  background:var(--maroon);border:1.5px solid var(--white);
+}
+.user-chip{display:flex;align-items:center;gap:10px;}
+.avatar-sm{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--gold);color:var(--forest-deep);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:0.85rem;font-family:'Fraunces',serif;
+}
+.user-chip .who{display:flex;flex-direction:column;line-height:1.2;}
+.user-chip .who span:first-child{font-size:0.85rem;font-weight:600;}
+.user-chip .who span:last-child{font-size:0.72rem;color:var(--ink-soft);}
+
+.sidebar{
+  position:fixed;top:64px;left:0;bottom:0;width:230px;
+  background:var(--forest-deep);
+  padding:18px 12px;
+  overflow-y:auto;
+  z-index:25;
+  transition:transform .2s ease;
+}
+.sidebar-brand{
+  display:flex;align-items:center;gap:10px;
+  padding:6px 10px 18px 10px;
+  border-bottom:1px solid #1E4533;
+  margin-bottom:14px;
+}
+.sidebar-brand .nm{color:var(--cream);font-size:0.78rem;line-height:1.3;font-weight:600;}
+.sidebar-brand .nm small{display:block;color:var(--gold-soft);font-size:0.65rem;font-weight:500;letter-spacing:0.04em;}
+.navlink{
+  display:flex;align-items:center;gap:12px;
+  width:100%;text-align:left;
+  background:none;border:none;
+  color:#C9D9CD;
+  padding:11px 12px;
+  border-radius:8px;
+  font-size:0.86rem;
+  margin-bottom:2px;
+  transition:background .15s,color .15s;
+}
+.navlink svg{flex-shrink:0;opacity:0.85;}
+.navlink:hover{background:#1E4533;color:var(--white);}
+.navlink.active{background:var(--forest);color:var(--white);}
+.navlink.active svg{opacity:1;}
+.nav-divider{height:1px;background:#1E4533;margin:12px 6px;}
+.nav-logout{color:#E3B3A8;}
+.nav-logout:hover{background:#3A1F1F;color:#fff;}
+
+.backdrop{
+  display:none;position:fixed;inset:0;background:rgba(15,46,34,.45);z-index:20;
+}
+
+main.content{
+  margin-left:230px;
+  padding:88px 30px 50px 30px;
+}
+.panel{display:none;}
+.panel.active{display:block;}
+.panel-head{margin-bottom:22px;}
+.panel-head h1{font-size:1.5rem;margin:0 0 4px 0;color:var(--forest-deep);}
+.panel-head p{margin:0;color:var(--ink-soft);font-size:0.88rem;}
+
+/* Cards / grid */
+.stat-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:16px;margin-bottom:26px;
+}
+.stat-card{
+  background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 18px;
+}
+.stat-card .lbl{font-size:0.74rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--ink-soft);font-weight:600;}
+.stat-card .val{font-family:'Fraunces',serif;font-size:1.6rem;color:var(--forest-deep);margin-top:6px;}
+.stat-card .sub{font-size:0.78rem;color:var(--ink-soft);margin-top:4px;}
+.stat-card.accent{border-color:var(--gold);}
+.stat-card.accent .val{color:var(--maroon);}
+
+.card{
+  background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px;margin-bottom:22px;
+}
+.card h3{margin:0 0 16px 0;font-size:1.05rem;color:var(--forest-deep);}
+.two-col{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;}
+@media (max-width:900px){.two-col{grid-template-columns:1fr;}}
+
+/* Climb widget */
+.climb-wrap{display:flex;flex-direction:column;align-items:center;}
+.climb-wrap svg{width:100%;max-width:560px;height:auto;}
+.climb-caption{font-size:0.82rem;color:var(--ink-soft);margin-top:10px;text-align:center;}
+.climb-path{
+  stroke-dasharray:600;stroke-dashoffset:600;
+  animation:draw 1.6s ease forwards;
+}
+@keyframes draw{to{stroke-dashoffset:0;}}
+
+/* lists */
+.feed-item{padding:13px 0;border-bottom:1px solid var(--line);}
+.feed-item:last-child{border-bottom:none;}
+.feed-item .tag{
+  display:inline-block;font-size:0.65rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;
+  padding:3px 8px;border-radius:5px;background:var(--sand);color:var(--forest-deep);margin-bottom:6px;
+}
+.feed-item .tag.fees{background:#F3DEDE;color:var(--maroon);}
+.feed-item .tag.sports{background:#DDE9E0;color:var(--forest);}
+.feed-item h4{margin:0 0 4px 0;font-size:0.92rem;}
+.feed-item p{margin:0;font-size:0.82rem;color:var(--ink-soft);line-height:1.5;}
+.feed-item .date{font-size:0.74rem;color:var(--ink-soft);}
+
+.upcoming-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);font-size:0.86rem;}
+.upcoming-row:last-child{border-bottom:none;}
+.upcoming-row .when{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;background:var(--sand);padding:3px 8px;border-radius:6px;color:var(--forest-deep);}
+
+/* table */
+table{width:100%;border-collapse:collapse;font-size:0.88rem;}
+thead th{
+  text-align:left;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;
+  color:var(--ink-soft);font-weight:600;padding:0 10px 10px 10px;border-bottom:2px solid var(--line);
+}
+tbody td{padding:11px 10px;border-bottom:1px solid var(--line);}
+tbody tr:last-child td{border-bottom:none;}
+td.num,th.num{font-family:'IBM Plex Mono',monospace;}
+.grade-pill{
+  font-family:'IBM Plex Mono',monospace;font-size:0.78rem;font-weight:600;
+  padding:3px 9px;border-radius:6px;background:var(--sand);color:var(--forest-deep);
+}
+.status-pill{font-size:0.74rem;font-weight:600;padding:3px 9px;border-radius:6px;}
+.status-pill.ok{background:#DCEEE2;color:#1B4332;}
+.status-pill.warn{background:#FCEBC9;color:#8A5E0A;}
+.status-pill.late{background:#F3DEDE;color:var(--maroon);}
+
+.select-row{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.select-row label{font-size:0.82rem;font-weight:600;color:var(--ink-soft);}
+select{
+  padding:9px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--white);
+  font-size:0.86rem;font-family:inherit;color:var(--charcoal);
+}
+.empty-note{
+  background:var(--sand);border:1px dashed var(--line);border-radius:8px;
+  padding:16px;font-size:0.86rem;color:var(--ink-soft);text-align:center;
+}
+.profile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px 28px;}
+.profile-field .lbl{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink-soft);font-weight:600;margin-bottom:3px;}
+.profile-field .val{font-size:0.92rem;}
+.btn-secondary{
+  background:var(--white);border:1.5px solid var(--forest);color:var(--forest);
+  padding:9px 16px;border-radius:8px;font-size:0.85rem;font-weight:600;
+}
+.btn-secondary:hover{background:var(--forest);color:var(--white);}
+.toast{
+  position:fixed;bottom:24px;right:24px;background:var(--forest-deep);color:var(--cream);
+  padding:13px 18px;border-radius:8px;font-size:0.85rem;max-width:300px;line-height:1.4;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);z-index:60;transform:translateY(20px);opacity:0;
+  transition:transform .25s,opacity .25s;
+}
+.toast.show{transform:translateY(0);opacity:1;}
+
+.tt-table th,.tt-table td{text-align:center;font-size:0.78rem;}
+.tt-table td.day-cell{font-weight:600;text-align:left;color:var(--forest-deep);}
+.tt-table td.brk{background:var(--sand);color:var(--ink-soft);font-style:italic;}
+
+/* responsive */
+@media (max-width:860px){
+  .login-illustration{display:none;}
+  .login-panel{padding:24px 18px;}
+  #hamburger{display:inline-flex;}
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);}
+  main.content{margin-left:0;padding:84px 16px 40px 16px;}
+  .backdrop.show{display:block;}
+  .user-chip .who{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN SCREEN ================= -->
+<div id="login-screen">
+  <div class="login-illustration">
+    <svg class="hills" viewBox="0 0 700 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,180 L120,110 L230,170 L330,90 L460,160 L560,100 L700,150 L700,300 L0,300 Z" fill="#16382A"/>
+      <path d="M0,230 L150,160 L280,210 L420,140 L560,200 L700,170 L700,300 L0,300 Z" fill="#1B4332"/>
+      <path d="M0,265 L180,220 L340,255 L520,210 L700,240 L700,300 L0,300 Z" fill="#234B38"/>
+    </svg>
+    <div class="brand-mark">
+      <svg width="38" height="38" viewBox="0 0 38 38">
+        <circle cx="19" cy="19" r="18" fill="#0F2E22" stroke="#C99A2E" stroke-width="1.4"/>
+        <path d="M9 25 L15 14 L19 20 L23 12 L29 25 Z" fill="#C99A2E"/>
+        <rect x="9" y="25" width="20" height="2.2" fill="#C99A2E"/>
+      </svg>
+      <div>
+        <div class="school-name">MOUNT ZION SENIOR<br>SECONDARY SCHOOL</div>
+        <div class="school-loc">Nakigo · Iganga District</div>
+      </div>
+    </div>
+    <div class="illustration-copy">
+      <p class="motto display">Rising in Knowledge,<br>Rooted in Faith.</p>
+      <p>The student portal for Mount Zion SSS — report cards, fees, timetable and school news, all in one place.</p>
+    </div>
+    <div class="illustration-footer">
+      <span>Nakigo Subcounty, Iganga District, Uganda</span>
+      <span>info@mountzionsss.ug</span>
+    </div>
+  </div>
+
+  <div class="login-panel">
+    <div class="login-card">
+      <h2>Student Sign In</h2>
+      <p class="sub">Enter your admission number and password to access your portal.</p>
+      <form id="login-form">
+        <div class="field">
+          <label for="adm">Admission Number</label>
+          <input id="adm" type="text" placeholder="MZS/2024/0142" required>
+        </div>
+        <div class="field">
+          <label for="pwd">Password</label>
+          <input id="pwd" type="password" placeholder="••••••••" required>
+        </div>
+        <div class="login-row">
+          <label style="display:flex;align-items:center;gap:7px;font-weight:500;color:var(--ink-soft);">
+            <input type="checkbox" style="width:auto;"> Remember me
+          </label>
+          <button type="button" class="forgot-link" id="forgot-btn">Forgot password?</button>
+        </div>
+        <button type="submit" class="btn-primary">Sign In</button>
+      </form>
+      <div class="demo-hint">
+        <b>Demo access:</b> Admission No. <b>MZS/2024/0142</b>, Password <b>demo123</b> — or enter anything, this is a working prototype.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PORTAL SCREEN ================= -->
+<div id="portal-screen">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <button id="hamburger" aria-label="Toggle menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1B4332" stroke-width="1.8" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="topbar-title" id="topbar-title">Dashboard</div>
+    </div>
+    <div class="topbar-right">
+      <div class="bell-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B5650" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a5 5 0 0 0-5 5v3.2c0 .9-.5 1.8-1.3 2.6L4 15.5h16l-1.7-1.7c-.8-.8-1.3-1.7-1.3-2.6V8a5 5 0 0 0-5-5z"/><path d="M9.3 19a2.7 2.7 0 0 0 5.4 0"/></svg>
+        <span class="bell-dot"></span>
+      </div>
+      <div class="user-chip">
+        <div class="avatar-sm">SN</div>
+        <div class="who"><span>Namutebi Sarah</span><span>S4 East · Faith House</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="backdrop" id="backdrop"></div>
+
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <svg width="26" height="26" viewBox="0 0 38 38" style="flex-shrink:0;"><circle cx="19" cy="19" r="18" fill="#0F2E22" stroke="#C99A2E" stroke-width="1.4"/><path d="M9 25 L15 14 L19 20 L23 12 L29 25 Z" fill="#C99A2E"/><rect x="9" y="25" width="20" height="2.2" fill="#C99A2E"/></svg>
+      <div class="nm">MOUNT ZION SSS<small>Nakigo, Iganga</small></div>
+    </div>
+
+    <button class="navlink active" data-target="overview">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
+      Dashboard
+    </button>
+    <button class="navlink" data-target="profile">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+      My Profile
+    </button>
+    <button class="navlink" data-target="report">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="3" width="14" height="18" rx="1.5"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>
+      Report Card
+    </button>
+    <button class="navlink" data-target="fees">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="6" width="18" height="13" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Fees
+    </button>
+    <button class="navlink" data-target="timetable">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>
+      Timetable
+    </button>
+    <button class="navlink" data-target="attendance">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 13l2.5 2.5L16 10"/></svg>
+      Attendance
+    </button>
+    <button class="navlink" data-target="library">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 6c-2-1.4-5-1.8-8-1v13c3-0.8 6-0.4 8 1 2-1.4 5-1.8 8-1V5c-3-0.8-6-0.4-8 1z"/><line x1="12" y1="6" x2="12" y2="19"/></svg>
+      Library
+    </button>
+    <button class="navlink" data-target="announcements">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3a5 5 0 0 0-5 5v3.2c0 .9-.5 1.8-1.3 2.6L4 15.5h16l-1.7-1.7c-.8-.8-1.3-1.7-1.3-2.6V8a5 5 0 0 0-5-5z"/><path d="M9.3 19a2.7 2.7 0 0 0 5.4 0"/></svg>
+      Announcements
+    </button>
+    <div class="nav-divider"></div>
+    <button class="navlink nav-logout" id="logout-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Log Out
+    </button>
+  </div>
+
+  <main class="content">
+
+    <!-- OVERVIEW -->
+    <section class="panel active" id="panel-overview">
+      <div class="panel-head">
+        <h1>Welcome back, Sarah</h1>
+        <p>S4 East · Faith House · Term II, 2026</p>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card"><div class="lbl">Class & Stream</div><div class="val">S4 East</div><div class="sub">Form Tutor: Mr. Kato</div></div>
+        <div class="stat-card accent"><div class="lbl">Fees Balance</div><div class="val">UGX 250,000</div><div class="sub">Due before 30 June</div></div>
+        <div class="stat-card"><div class="lbl">Attendance</div><div class="val">96%</div><div class="sub">50 of 52 school days</div></div>
+        <div class="stat-card"><div class="lbl">Last Exam Position</div><div class="val">4th / 42</div><div class="sub">Mid-Term I, 2026</div></div>
+      </div>
+
+      <div class="card">
+        <h3>Your Climb — S4 Journey</h3>
+        <div class="climb-wrap">
+          <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,200 L130,90 L260,170 L420,40 L600,150 L600,220 L0,220 Z" fill="#ECE2C9"/>
+            <path d="M0,200 L130,90 L260,170 L420,40 L600,150" fill="none" stroke="#DCD3B9" stroke-width="2"/>
+            <path class="climb-path" d="M40,195 C100,160 140,150 190,140 C260,128 300,110 360,90 C410,70 450,55 470,42" fill="none" stroke="#C99A2E" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 7"/>
+            <circle cx="40" cy="195" r="7" fill="#1B4332"/>
+            <circle cx="190" cy="140" r="7" fill="#1B4332"/>
+            <circle cx="360" cy="90" r="9" fill="#C99A2E" stroke="#fff" stroke-width="2"/>
+            <circle cx="470" cy="42" r="7" fill="#FFFFFF" stroke="#7A2E2E" stroke-width="2"/>
+            <text x="40" y="213" font-size="12" fill="#5B5650" text-anchor="middle" font-family="Work Sans, sans-serif">Term I</text>
+            <text x="190" y="160" font-size="12" fill="#5B5650" text-anchor="middle" font-family="Work Sans, sans-serif">— passed —</text>
+            <text x="360" y="112" font-size="12" fill="#1B4332" font-weight="600" text-anchor="middle" font-family="Work Sans, sans-serif">Term II (you)</text>
+            <text x="470" y="30" font-size="12" fill="#7A2E2E" text-anchor="middle" font-family="Work Sans, sans-serif">S4 Completion</text>
+          </svg>
+          <p class="climb-caption">You're in Week 6 of Term II — keep climbing, the mid-term exams mark the next checkpoint.</p>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <h3>Recent Announcements</h3>
+          <div class="feed-item">
+            <span class="tag">Academic</span>
+            <h4>Mid-Term Examinations begin Monday, 22 June</h4>
+            <p>Class teachers will issue the seating and subject timetable this Friday.</p>
+            <span class="date">15 June 2026</span>
+          </div>
+          <div class="feed-item">
+            <span class="tag fees">Fees</span>
+            <h4>Term II balances due before exams</h4>
+            <p>Students with outstanding balances are reminded to clear fees by 30 June.</p>
+            <span class="date">12 June 2026</span>
+          </div>
+          <div class="feed-item">
+            <span class="tag sports">Sports</span>
+            <h4>Inter-House Sports Gala — 4 July</h4>
+            <p>Faith, Hope, Grace and Glory Houses compete at the school grounds in Nakigo.</p>
+            <span class="date">9 June 2026</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Upcoming</h3>
+          <div class="upcoming-row"><span>Mid-Term Examinations</span><span class="when">22 Jun</span></div>
+          <div class="upcoming-row"><span>PTA Meeting — School Hall</span><span class="when">28 Jun</span></div>
+          <div class="upcoming-row"><span>Inter-House Sports Gala</span><span class="when">04 Jul</span></div>
+          <div class="upcoming-row"><span>Term II ends</span><span class="when">31 Jul</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section class="panel" id="panel-profile">
+      <div class="panel-head"><h1>My Profile</h1><p>Your personal and guardian information on record.</p></div>
+      <div class="card">
+        <div style="display:flex;gap:20px;align-items:center;margin-bottom:24px;">
+          <div class="avatar-sm" style="width:64px;height:64px;font-size:1.3rem;">SN</div>
+          <div>
+            <h3 style="margin:0;">Namutebi Sarah</h3>
+            <p style="margin:2px 0 0 0;color:var(--ink-soft);font-size:0.86rem;">Admission No. MZS/2024/0142 · S4 East · Faith House</p>
+          </div>
+        </div>
+        <div class="profile-grid">
+          <div class="profile-field"><div class="lbl">Date of Birth</div><div class="val">14 March 2010</div></div>
+          <div class="profile-field"><div class="lbl">Sex</div><div class="val">Female</div></div>
+          <div class="profile-field"><div class="lbl">House</div><div class="val">Faith House</div></div>
+          <div class="profile-field"><div class="lbl">Class Stream</div><div class="val">S4 East</div></div>
+          <div class="profile-field"><div class="lbl">Home Village</div><div class="val">Nakigo, Iganga District</div></div>
+          <div class="profile-field"><div class="lbl">Boarding Status</div><div class="val">Day Scholar</div></div>
+          <div class="profile-field"><div class="lbl">Guardian Name</div><div class="val">Mr. Namutebi John</div></div>
+          <div class="profile-field"><div class="lbl">Guardian Contact</div><div class="val">+256 772 4xx xxx</div></div>
+          <div class="profile-field"><div class="lbl">Emergency Contact</div><div class="val">+256 701 5xx xxx</div></div>
+        </div>
+        <div style="margin-top:24px;">
+          <button class="btn-secondary" id="edit-profile-btn">Request a Change</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- REPORT CARD -->
+    <section class="panel" id="panel-report">
+      <div class="panel-head"><h1>Report Card</h1><p>Subject performance for Namutebi Sarah, S4 East.</p></div>
+      <div class="select-row">
+        <label for="term-select">Viewing term:</label>
+        <select id="term-select">
+          <option value="term1">Term I, 2026</option>
+          <option value="term2" selected>Term II, 2026</option>
+          <option value="term3">Term III, 2026</option>
+        </select>
+      </div>
+      <div class="card" id="report-card-body"></div>
+    </section>
+
+    <!-- FEES -->
+    <section class="panel" id="panel-fees">
+      <div class="panel-head"><h1>Fees</h1><p>Term II, 2026 account summary.</p></div>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="lbl">Total Fees, Term II</div><div class="val mono">850,000</div><div class="sub">UGX</div></div>
+        <div class="stat-card"><div class="lbl">Amount Paid</div><div class="val mono">600,000</div><div class="sub">UGX, in 2 instalments</div></div>
+        <div class="stat-card accent"><div class="lbl">Balance</div><div class="val mono">250,000</div><div class="sub">Due before 30 June</div></div>
+      </div>
+      <div class="card">
+        <h3>Payment History</h3>
+        <table>
+          <thead><tr><th>Date</th><th>Receipt No.</th><th class="num">Amount (UGX)</th><th>Method</th><th class="num">Balance After</th></tr></thead>
+          <tbody>
+            <tr><td>03 Feb 2026</td><td class="mono">RCT-10234</td><td class="num">400,000</td><td>Mobile Money</td><td class="num">450,000</td></tr>
+            <tr><td>10 Apr 2026</td><td class="mono">RCT-10589</td><td class="num">200,000</td><td>Bank Deposit</td><td class="num">250,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <h3>How to Pay</h3>
+          <p style="font-size:0.86rem;color:var(--ink-soft);line-height:1.6;margin:0 0 14px 0;">Fees can be paid by bank deposit or mobile money. Always quote the admission number as the reference, and bring the payment slip to the bursar's office for a receipt.</p>
+          <div class="profile-grid">
+            <div class="profile-field"><div class="lbl">Bank</div><div class="val">Centenary Bank, Iganga Branch</div></div>
+            <div class="profile-field"><div class="lbl">Account Name</div><div class="val">Mount Zion SSS Fees A/C</div></div>
+            <div class="profile-field"><div class="lbl">Mobile Money</div><div class="val">0772 300 145 (Bursar)</div></div>
+          </div>
+        </div>
+        <div class="card" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;">
+          <h3>Clear your balance</h3>
+          <p style="font-size:0.86rem;color:var(--ink-soft);margin:0 0 16px 0;">Outstanding balance for Term II, 2026:</p>
+          <div class="val mono" style="font-size:1.5rem;color:var(--maroon);margin-bottom:16px;">UGX 250,000</div>
+          <button class="btn-primary" id="pay-now-btn" style="width:auto;padding:11px 22px;">Record a Payment</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIMETABLE -->
+    <section class="panel" id="panel-timetable">
+      <div class="panel-head"><h1>Timetable</h1><p>S4 East weekly class schedule, Term II 2026.</p></div>
+      <div class="card" style="overflow-x:auto;">
+        <table class="tt-table">
+          <thead><tr><th>Time</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th></tr></thead>
+          <tbody>
+            <tr><td class="day-cell mono">8:00–8:40</td><td>Mathematics</td><td>English</td><td>Physics</td><td>Biology</td><td>Agriculture</td></tr>
+            <tr><td class="day-cell mono">8:40–9:20</td><td>English</td><td>Mathematics</td><td>Chemistry</td><td>History</td><td>Mathematics</td></tr>
+            <tr><td class="day-cell mono">9:20–10:00</td><td>Physics</td><td>Biology</td><td>Geography</td><td>CRE</td><td>Literature</td></tr>
+            <tr><td colspan="6" class="brk">10:00 – 10:20 · Short Break</td></tr>
+            <tr><td class="day-cell mono">10:20–11:00</td><td>Chemistry</td><td>Geography</td><td>Mathematics</td><td>Physics</td><td>English</td></tr>
+            <tr><td class="day-cell mono">11:00–11:40</td><td>Biology</td><td>CRE</td><td>English</td><td>Chemistry</td><td>Geography</td></tr>
+            <tr><td class="day-cell mono">11:40–12:20</td><td>History</td><td>Agriculture</td><td>Literature</td><td>Mathematics</td><td>P.E.</td></tr>
+            <tr><td colspan="6" class="brk">12:20 – 1:20 · Lunch Break</td></tr>
+            <tr><td class="day-cell mono">1:20–2:00</td><td>Literature</td><td>Physics</td><td>Biology</td><td>Geography</td><td>Class Prep</td></tr>
+            <tr><td class="day-cell mono">2:00–2:40</td><td>Agriculture</td><td>Library</td><td>History</td><td>English</td><td>Class Prep</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ATTENDANCE -->
+    <section class="panel" id="panel-attendance">
+      <div class="panel-head"><h1>Attendance</h1><p>Term II, 2026 attendance record.</p></div>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="lbl">School Days So Far</div><div class="val">52</div></div>
+        <div class="stat-card"><div class="lbl">Present</div><div class="val">50</div></div>
+        <div class="stat-card"><div class="lbl">Absent</div><div class="val">2</div><div class="sub">Sick leave, with note</div></div>
+        <div class="stat-card accent"><div class="lbl">Attendance Rate</div><div class="val">96%</div></div>
+      </div>
+      <div class="card">
+        <h3>Monthly Breakdown</h3>
+        <table>
+          <thead><tr><th>Month</th><th class="num">School Days</th><th class="num">Present</th><th class="num">Absent</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>February 2026</td><td class="num">20</td><td class="num">20</td><td class="num">0</td><td><span class="status-pill ok">Full attendance</span></td></tr>
+            <tr><td>March 2026</td><td class="num">22</td><td class="num">21</td><td class="num">1</td><td><span class="status-pill warn">1 day missed</span></td></tr>
+            <tr><td>April 2026</td><td class="num">18</td><td class="num">18</td><td class="num">0</td><td><span class="status-pill ok">Full attendance</span></td></tr>
+            <tr><td>May 2026</td><td class="num">21</td><td class="num">20</td><td class="num">1</td><td><span class="status-pill warn">1 day missed</span></td></tr>
+            <tr><td>June 2026 (so far)</td><td class="num">11</td><td class="num">11</td><td class="num">0</td><td><span class="status-pill ok">Full attendance</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- LIBRARY -->
+    <section class="panel" id="panel-library">
+      <div class="panel-head"><h1>Library</h1><p>Books currently and previously borrowed.</p></div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Title</th><th>Author</th><th>Borrowed</th><th>Due</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Things Fall Apart</td><td>Chinua Achebe</td><td class="mono">02 May 2026</td><td class="mono">23 May 2026</td><td><span class="status-pill ok">Returned</span></td></tr>
+            <tr><td>Excellence in Mathematics S4</td><td>J. Mukasa</td><td class="mono">01 Jun 2026</td><td class="mono">22 Jun 2026</td><td><span class="status-pill warn">Due soon</span></td></tr>
+            <tr><td>A History of East Africa</td><td>P. Otiende</td><td class="mono">15 May 2026</td><td class="mono">05 Jun 2026</td><td><span class="status-pill late">Overdue</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card" style="text-align:center;">
+        <p style="margin:0 0 14px 0;color:var(--ink-soft);font-size:0.88rem;">Looking for something new to read?</p>
+        <button class="btn-secondary" id="browse-library-btn">Browse the Catalogue</button>
+      </div>
+    </section>
+
+    <!-- ANNOUNCEMENTS -->
+    <section class="panel" id="panel-announcements">
+      <div class="panel-head"><h1>Announcements</h1><p>News and notices from the school administration.</p></div>
+      <div class="card">
+        <div class="feed-item">
+          <span class="tag">Academic</span>
+          <h4>Mid-Term Examinations begin Monday, 22 June</h4>
+          <p>Class teachers will issue the seating arrangement and subject timetable this Friday. Students should bring their own stationery and report cards from Term I for verification.</p>
+          <span class="date">15 June 2026</span>
+        </div>
+        <div class="feed-item">
+          <span class="tag fees">Fees</span>
+          <h4>Term II fees balance reminder</h4>
+          <p>All students are reminded to clear outstanding balances by 30 June. Candidates with balances above UGX 300,000 may be asked to see the bursar before sitting mid-term exams.</p>
+          <span class="date">12 June 2026</span>
+        </div>
+        <div class="feed-item">
+          <span class="tag sports">Sports</span>
+          <h4>Inter-House Sports Gala — 4 July</h4>
+          <p>Faith, Hope, Grace and Glory Houses will compete in athletics and ball games at the school grounds in Nakigo. Parents and guardians are welcome to attend.</p>
+          <span class="date">9 June 2026</span>
+        </div>
+        <div class="feed-item">
+          <span class="tag">General</span>
+          <h4>PTA Meeting — 28 June, 10:00 AM</h4>
+          <p>Parents and guardians are invited to the school hall to discuss Term II progress, the new dormitory block, and plans for next year's intake.</p>
+          <span class="date">5 June 2026</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ---------- LOGIN ----------
+document.getElementById('login-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('portal-screen').style.display = 'block';
+});
+
+document.getElementById('forgot-btn').addEventListener('click', function(){
+  showToast("Visit the school office or ask your class teacher to reset your password. Passwords cannot be reset from this page.");
+});
+
+// ---------- LOGOUT ----------
+document.getElementById('logout-btn').addEventListener('click', function(){
+  document.getElementById('portal-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('adm').value = '';
+  document.getElementById('pwd').value = '';
+});
+
+// ---------- SIDEBAR NAV ----------
+var navlinks = document.querySelectorAll('.navlink[data-target]');
+var panels = document.querySelectorAll('.panel');
+var topbarTitle = document.getElementById('topbar-title');
+var titles = {
+  overview:'Dashboard', profile:'My Profile', report:'Report Card', fees:'Fees',
+  timetable:'Timetable', attendance:'Attendance', library:'Library', announcements:'Announcements'
+};
+navlinks.forEach(function(btn){
+  btn.addEventListener('click', function(){
+    navlinks.forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    var target = btn.getAttribute('data-target');
+    panels.forEach(function(p){ p.classList.remove('active'); });
+    document.getElementById('panel-' + target).classList.add('active');
+    topbarTitle.textContent = titles[target];
+    closeSidebarMobile();
+    window.scrollTo(0,0);
+  });
+});
+
+// ---------- MOBILE SIDEBAR ----------
+var sidebar = document.getElementById('sidebar');
+var backdrop = document.getElementById('backdrop');
+document.getElementById('hamburger').addEventListener('click', function(){
+  sidebar.classList.toggle('open');
+  backdrop.classList.toggle('show');
+});
+backdrop.addEventListener('click', closeSidebarMobile);
+function closeSidebarMobile(){
+  sidebar.classList.remove('open');
+  backdrop.classList.remove('show');
+}
+
+// ---------- TOAST ----------
+var toastTimer;
+function showToast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 4200);
+}
+document.getElementById('edit-profile-btn').addEventListener('click', function(){
+  showToast("Profile changes go through the school office. Visit the administration block with your guardian to update these records.");
+});
+document.getElementById('pay-now-btn').addEventListener('click', function(){
+  showToast("To record a payment, deposit at Centenary Bank or send Mobile Money, then bring the slip to the bursar's office for a receipt.");
+});
+document.getElementById('browse-library-btn').addEventListener('click', function(){
+  showToast("The full catalogue is available at the library front desk. Ask the librarian for this term's new arrivals.");
+});
+
+// ---------- REPORT CARD DATA ----------
+var reportData = {
+  term1: {
+    label:'Term I, 2026',
+    rows:[
+      ['Mathematics',72,'C4','Good grasp of algebra, needs more practice with geometry.'],
+      ['English Language',79,'C3','Clear writing; work on grammar accuracy.'],
+      ['Physics',68,'C5','Understands concepts; improve on calculations.'],
+      ['Chemistry',64,'C5','Average. Revise practical procedures.'],
+      ['Biology',74,'C3','Good understanding of human biology topics.'],
+      ['Geography',77,'C3','Strong map work skills.'],
+      ['History',61,'C5','Needs to read wider around set topics.'],
+      ['C.R.E.',83,'D2','Excellent participation in class discussion.']
+    ],
+    total:578, average:72.3, division:'Division II', aggregate:28,
+    classTeacher:'A promising start to S4. Sarah should keep up the consistency seen in languages and sciences.',
+    headTeacher:'Encouraged by this performance. Keep working hard, Sarah.'
+  },
+  term2: {
+    label:'Term II, 2026',
+    rows:[
+      ['Mathematics',78,'C3','Marked improvement in problem solving.'],
+      ['English Language',84,'D2','Very strong essay and comprehension work.'],
+      ['Physics',73,'C3','Good improvement in practical work.'],
+      ['Chemistry',69,'C4','Steady progress; keep revising equations.'],
+      ['Biology',76,'C3','Confident with diagrams and processes.'],
+      ['Geography',81,'D2','Excellent fieldwork report this term.'],
+      ['History',66,'C4','Better essay structure than last term.'],
+      ['C.R.E.',88,'D2','Outstanding moral reasoning and class input.']
+    ],
+    total:615, average:76.9, division:'Division I', aggregate:21,
+    classTeacher:'A clear step up from Term I across nearly every subject. Well done, Sarah — keep this momentum into the mid-terms.',
+    headTeacher:'A pleasing report. This is the standard to carry into the final exams.'
+  },
+  term3: null
+};
+
+function renderReportCard(termKey){
+  var data = reportData[termKey];
+  var container = document.getElementById('report-card-body');
+  if(!data){
+    container.innerHTML = '<div class="empty-note">Term III results have not been released yet. They will appear here once exams are marked and approved by the head teacher.</div>';
+    return;
+  }
+  var rowsHtml = data.rows.map(function(r){
+    return '<tr><td>'+r[0]+'</td><td class="num">'+r[1]+'</td><td><span class="grade-pill">'+r[2]+'</span></td><td style="color:var(--ink-soft);font-size:0.82rem;">'+r[3]+'</td></tr>';
+  }).join('');
+  container.innerHTML =
+    '<h3>'+data.label+' — Subject Results</h3>'+
+    '<table><thead><tr><th>Subject</th><th class="num">Score</th><th>Grade</th><th>Teacher\'s Remark</th></tr></thead><tbody>'+rowsHtml+'</tbody></table>'+
+    '<div class="stat-grid" style="margin-top:22px;">'+
+      '<div class="stat-card"><div class="lbl">Total</div><div class="val mono">'+data.total+'</div></div>'+
+      '<div class="stat-card"><div class="lbl">Average</div><div class="val mono">'+data.average+'%</div></div>'+
+      '<div class="stat-card accent"><div class="lbl">Division</div><div class="val">'+data.division+'</div><div class="sub">Aggregate '+data.aggregate+'</div></div>'+
+    '</div>'+
+    '<div class="profile-grid" style="margin-top:8px;">'+
+      '<div class="profile-field" style="grid-column:1/-1;"><div class="lbl">Class Teacher\'s Comment</div><div class="val">'+data.classTeacher+'</div></div>'+
+      '<div class="profile-field" style="grid-column:1/-1;"><div class="lbl">Head Teacher\'s Comment</div><div class="val">'+data.headTeacher+'</div></div>'+
+    '</div>';
+}
+document.getElementById('term-select').addEventListener('change', function(e){
+  renderReportCard(e.target.value);
+});
+renderReportCard('term2');
+</script>
+</body>
+</html>
